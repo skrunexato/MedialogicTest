@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 
+/**
+ * Classe dto utilizzata per mostrare un oggetto con al suo interno la data formata nel nostro formato e l'etaà
+ */
 public class UserDto {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")

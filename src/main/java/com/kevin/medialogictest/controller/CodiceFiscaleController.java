@@ -22,8 +22,8 @@ public class CodiceFiscaleController {
     @PostMapping("/getDataDiNascitaAndEta")
     public ResponseEntity<ResponseWrapper<UserDto>> getDataDiNascitaAndEta(@RequestParam("codiceFiscale") String codiceFiscale) {
 
-        //inanzittutto trimmo il codice fiscale cosi da non avere spazi vuoti
-        codiceFiscale = codiceFiscale.trim();
+        //inanzittutto trimmo il codice fiscale cosi da non avere spazi vuoti e lo metto tutto in maiuscolo casomai mi sia arrivato in minuscolo
+        codiceFiscale = codiceFiscale.trim().toUpperCase();
 
         //controllo se il codice fiscale sia innanzitutto valido
         if (!codiceFiscale.matches("^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$")) {
@@ -31,7 +31,9 @@ public class CodiceFiscaleController {
         }
 
         UserDto userDto = userService.getDataDiNascitaAndEta(codiceFiscale);
-        if (userDto == null) {
+        //metto in or perche se una delle due condizioni e soddisfatta per me va in errore
+        //perche devo poter riceve sia la data di nascita che l'età
+        if (userDto.getDataDiNascita()== null || userDto.getEta()==0) {
             return ResponseEntity.ok(ResponseWrapper.error("Errore durante il recupero della data di nascita e età"));
         }
 

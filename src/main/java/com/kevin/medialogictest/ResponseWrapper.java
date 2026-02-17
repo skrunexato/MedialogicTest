@@ -4,7 +4,7 @@ public class ResponseWrapper<T> {
 
    private String status        = null;
    private String description   = null;
-   private T      message       = null;
+   private T data = null;
 
 
    public ResponseWrapper() {
@@ -17,10 +17,10 @@ public class ResponseWrapper<T> {
       this.description = description;
    }
 
-   public ResponseWrapper(String status, String description, T message) {
+   public ResponseWrapper(String status, String description, T data) {
       this.status      = status;
       this.description = description;
-      this.message     = message;
+      this.data = data;
    }
    // Metodo statico per successo con dati specifici
    public static <T> ResponseWrapper<T> ok(T data) {
@@ -48,11 +48,11 @@ public class ResponseWrapper<T> {
       this.description = description;
    }
 
-   public T getMessage() {
-      return message;
+   public T getData() {
+      return data;
    }
 
-   public void setMessage(T message) {
-      this.message = message;
+   public void setData(T data) {
+      this.data = data;
    }
 }

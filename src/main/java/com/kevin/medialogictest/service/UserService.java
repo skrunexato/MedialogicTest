@@ -2,6 +2,8 @@ package com.kevin.medialogictest.service;
 
 import com.kevin.medialogictest.UserDto;
 import com.kevin.medialogictest.enumerazioni.Mesi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -11,16 +13,26 @@ import java.time.Year;
 @Service
 public class UserService {
 
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
+
+    /**
+     * Il seguente metodo si occupa di recuperare la data di nascita e l'età partendo dal codice fiscale e restituisce
+     * un oggetto dto contenente per l'appunto la data di nascita e l'età
+     * @param codiceFiscale
+     * @return un oggetto dto contenente data di nascita ed età
+     */
     public UserDto getDataDiNascitaAndEta(String codiceFiscale) {
 
         UserDto userDto = new UserDto();
         try {
-            //pulisco il codice fiscale da eventuali spazi e lo metto in maiuscolo
-            codiceFiscale = codiceFiscale.trim().toUpperCase();
+
 
             int annoDiNascita = calcoloAnnoDiNascita(Integer.parseInt(codiceFiscale.substring(6, 8)));
+
+
             int giornoDiNascita = Integer.parseInt(codiceFiscale.substring(9, 11));
+
 
             //attraverso un metodo presente nel mio enum chiamato "Mesi" estraggo il numero corretto del mese
             int meseDiNascita = Mesi.meseNumero(codiceFiscale.substring(8, 9));
@@ -30,14 +42,20 @@ public class UserService {
                 giornoDiNascita = giornoDiNascita - 40;
             }
 
-
+            log.info("risultato dell'anno di nascita: " + annoDiNascita);
+            log.info("risultato del mese di nascita calcolato partendo dalle lettere univoche presenti nel CF : " + meseDiNascita);
+            log.info("risultato del giorno di nascita: " + giornoDiNascita);
 
             LocalDate dataDiNascita = LocalDate.of(annoDiNascita, meseDiNascita, giornoDiNascita);
             int eta = calcolaEta(dataDiNascita);
 
+            log.info("risultato finale della data di nascita: " + dataDiNascita + ",ed  eta: " + eta);
+
+
             userDto.setDataDiNascita(dataDiNascita);
             userDto.setEta(eta);
         }catch (Exception e) {
+            log.error("errore durante il recupero della data di nascita ed eta: "+e.getMessage());
             return userDto;
         }
         return userDto;
