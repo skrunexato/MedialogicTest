@@ -6,34 +6,40 @@ import java.util.stream.Stream;
 
 public enum Mesi {
 
-   A("01"),
-   B("02"),
-   C("03"),
-   D("04"),
-   E("05"),
-   H("06"),
-   L("07"),
-   M("08"),
-   P("09"),
-   R("10"),
-   S("11"),
-   T("12");
+   A(1),
+   B(2),
+   C(3),
+   D(4),
+   E(5),
+   H(6),
+   L(7),
+   M(8),
+   P(9),
+   R(10),
+   S(11),
+   T(12);
 
-   private final String mm;
+   private final int mese;
 
-   Mesi(String mm) { this.mm = mm; }
+   Mesi(int mese) {
+      this.mese = mese;
+   }
 
-   public String mm() { return mm; }
+   public int getMese() {
+      return mese;
+   }
 
    private static final Map<String, Mesi> codiceMese =
-         Stream.of(values()).collect(Collectors.toMap(
-               e -> e.name(),
-               e -> e
-         ));
+           Stream.of(values())
+                   .collect(Collectors.toMap(
+                           Enum::name,
+                           e -> e
+                   ));
 
-   public static String meseNumero(String code) {
+   public static int meseNumero(String code) {
       Mesi v = codiceMese.get(code.toUpperCase());
-      if (v == null) throw new IllegalArgumentException("Codice mese CF non valido: " + code);
-      return v.mm();
+      if (v == null)
+         throw new IllegalArgumentException("Codice mese CF non valido: " + code);
+      return v.mese;
    }
 }
